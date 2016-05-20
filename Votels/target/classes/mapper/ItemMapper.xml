@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:采用接口方式间接操作时，命名空间值：与映射接口的全限定名一致 -->
+<mapper namespace="com.yc.votelmybatis.mapper.ItemMapper">
+	<insert id="addItem" parameterType="map">
+		insert into item values(seq_item_id.nextval,#{sid},#{oid},#{uid})
+	</insert>
+	
+	<resultMap type="OptionUserNumBean" id="optionUserNumBeanMap">
+		<id column="id" property="optionId"/>
+		
+		<association property="subject" column="subjectId" select="findSubject">
+			<id column="id" property="id" />
+		</association>
+		
+		<association property="num" column="id" select="getOptionUserNum"/>
+		
+		<association property="sumNum" column="subjectId" select="getSubjectUserNum"/>
+	</resultMap>
+	
+	<select id="getOptionUserNum" resultType="int">
+		select count(1) from item where optionId=#{id}
+	</select>
+	<select id="getSubjectUserNum" resultType="int">
+		select count(1) from item where subjectId=#{id}
+	</select>
+	<select id="findSubject" parameterType="int" resultType="Subject">
+		select * from subject where id=#{id}
+	</select>
+	
+	<select id="getSubjectResult" parameterType="int" resultMap="optionUserNumBeanMap">
+		select * from votelOption where subjectId=#{subjectId} order by optionOrder
+	</select>
+</mapper>

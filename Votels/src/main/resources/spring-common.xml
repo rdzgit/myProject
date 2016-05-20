@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+	
+		
+	<!-- 不手动配置bean，自动扫描bean包，注意：要使用命名空间context 
+		base-package：扫描指定的bean包
+		如果：发现
+			@Controller : 表示控制层的bean
+			@Repository : 表示持久层的bean
+			@Service : 表示业务层的bean
+			@Component : 表示普通的bean
+			目前来说作用一样，都是标识指定类是一个bean
+	-->
+	<context:component-scan base-package="com.yc"/>
+</beans>

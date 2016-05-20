@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.cloud.mapper.FavoriteMapper">
+	<!-- 获取所有未分类的网址信息 -->
+	<select id="findFavByTagNull" resultType="Favorite">
+		select * from cloudFavorite where ftags is null
+	</select>
+
+	<!-- 获取所有的网址信息 -->
+	<select id="getAllFav" resultType="Favorite">
+		select * from cloudFavorite
+	</select>
+	
+	<!-- 根据tags获取所有的网址信息 -->
+	<select id="findFavByTag" parameterType="string" resultType="Favorite">
+		select * from cloudFavorite where ftags like concat(concat('%',#{tags}),'%')
+	</select>
+	
+	<insert id="addFav" parameterType="Favorite">
+		insert into cloudFavorite(fid,flabel,furl,
+			<if test="ftags != null and ftags!=''">
+				ftags,
+			</if>
+			fdesc) 
+		values(cloudFavorite_fid.Nextval,#{flabel},#{furl},
+			<if test="ftags != null and ftags!=''">
+				#{ftags},
+			</if>
+		#{fdesc})
+	</insert>
+</mapper>

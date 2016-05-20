@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.objectFactory" value="spring" />
+
+    <package name="default" namespace="/" extends="struts-default">
+    	<action name="*_*" class="{1}Action" method="{2}">
+    		<result name="registerSuccess">/reg_success.jsp</result>
+    		<result name="registerFailed">/register.jsp</result>
+    		<result name="manage">/manage.jsp</result>
+     		<result name="vote">/vote.jsp</result>
+    		<result name="view">/view.jsp</result>
+    		<result name="update">/update.jsp</result>
+    	</action>
+    </package>
+</struts>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.objectFactory" value="spring" />
+
+    <package name="profile" namespace="/" extends="struts-default">
+		<action name="*_*" class="{1}Action" method="{2}">
+			<result name="UserList">/UserList.jsp</result>
+			<result name="oneInfo">/oneInfo.jsp</result>
+			<result name="update">/update.jsp</result>
+			<result name="uSuccess">/update.jsp?result=1</result>
+			<result name="uFailed">/update.jsp?result=0</result>
+		</action>
+    </package>
+    
+</struts>

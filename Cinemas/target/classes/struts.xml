@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.objectFactory" value="spring" />
+    
+    <package name="cinema" namespace="/" extends="struts-default">
+		<!-- <action name="Type_getTypes" class="com.yc.cinema.action.TypeAction" method="getTypes"/>-->		
+    </package>
+    
+	<package name="cinema2" namespace="/" extends="json-default">
+		<!-- 使用struts json插件包做json响应 -->
+		<action name="Type_getTypes" class="typeAction" method="getTypes">
+			<result type="json">
+				<!-- 要转化成json对象的对象名，要提供getXXX方法 -->
+				<param name="root">fileTypes</param>
+			</result>
+		</action>
+		
+		<action name="Film_search" class="filmAction" method="search">
+			<result>/page/result.jsp</result>
+		</action>
+		
+		<action name="Film_add" class="filmAction" method="add">
+			<result>/page/result.jsp</result>
+		</action>
+    </package>
+</struts>

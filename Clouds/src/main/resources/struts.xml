@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.objectFactory" value="spring" />
+
+    <package name="cloud" namespace="/" extends="struts-default">
+
+    </package>
+    
+    <package name="clouds-json" namespace="/" extends="json-default">
+		<action name="cloudTag_getAllTag" class="tagAction" method="getAllTags">
+			<result type="json">
+				<param name="root">tags</param>
+			</result>
+		</action>
+		
+		<action name="fav_*" class="favoriteAction" method="{1}">
+			<result type="json">
+				<param name="root">favorites</param>
+			</result>
+		</action>
+		
+		<action name="addFav" class="favoriteAction" method="addFav">
+			<result>/add.jsp?op=1</result>
+		</action>
+	</package>
+</struts>

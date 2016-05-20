@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- 数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		p:driverClassName="oracle.jdbc.driver.OracleDriver" 
+		p:url="jdbc:oracle:thin:@localhost:1521:orcl"
+		p:username="scott" p:password="a" />
+
+	<!-- SqlSessionFactory对象 
+		p:dataSource-ref:数据源
+		p:typeAliasesPackage:mybatis实体类型指定别名
+		p:mapperLocations:mybatis实体类的映射文件
+		p:configLocation:mybatis配置文件所在的位置
+	-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="dataSource"
+		p:typeAliasesPackage="com.yc.votelmybatis.entity" 
+		p:mapperLocations="classpath:mapper/*Mapper.xml"/>
+		
+	<!-- 配置映射接口的代理实现类的bean，bean id默认为映射接口名首字母小写 
+		(如: 接口名UserMapper bean名为userMapper) -->
+ 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+		p:sqlSessionFactoryBeanName="sqlSessionFactory"
+		p:basePackage="com.yc.votelmybatis.mapper" />
+</beans>

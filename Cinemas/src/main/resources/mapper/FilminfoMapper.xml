@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yc.cinema.mapper.FilminfoMapper">
+	<resultMap type="Filminfo" id="FilminfoMap">
+		<id column="filmid" property="filmid"/>
+		<result column="filmname" property="filmname"/>
+		<result column="actor" property="actor"/>
+		<result column="director" property="director"/>
+		<result column="ticketprice" property="ticketprice"/>
+		
+		<association property="type" column="typeid" javaType="Filmtype" >
+			<id column="typeid" property="typeid"/>
+			<result column="typename" property="typename"/>
+		</association>
+	</resultMap>
+	
+	<select id="getFilmByFilmBran" parameterType="FilmBean" resultMap="FilminfoMap">
+		select * from filmInfo fi join filmType ft on fi.typeid=ft.typeid
+		<where>
+			<if test="filmname != null and filmname != ''">
+				and fi.filmname like '%${filmname}%'
+			</if>
+			 
+			<if test="typeid != null and typeid != 0">
+				and fi.typeid=#{typeid}
+			</if>
+			
+			<if test="actor != null and actor != ''">
+				and fi.actor like '%${actor}%'
+			</if>
+			
+			<if test="director != null and director != ''">
+				and fi.director like '%${director}%'
+			</if>
+			
+			<choose>
+				<when test="minprice != null and maxprice != null">
+					and fi.TICKETPRICE between #{minprice} and #{maxprice}
+				</when>
+				<when test="minprice != null">
+					and fi.TICKETPRICE > #{minprice}
+				</when>
+				<when test="maxprice != null">
+					and #{maxprice} > fi.TICKETPRICE
+				</when>
+			</choose>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="Filminfo">
+		insert into filmInfo values(seq_filmInfo.nextval, #{filmname}, #{type.typeid}, #{actor}, #{director}, #{ticketprice})
+	</insert>
+</mapper>

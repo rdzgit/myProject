@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:采用接口方式间接操作时，命名空间值：与映射接口的全限定名一致 -->
+<mapper namespace="com.yc.votelmybatis.mapper.OptionMapper">
+	<insert id="addOptions" parameterType="Option">
+		<foreach collection="list" item="options"
+			open="insert into votelOption select seq_votelOption_id.NEXTVAL,t.c1,t.c2,t.c3 from ("
+			close=") t" separator="union">
+			select #{options.name} c1, #{options.optionOrder} c2, #{options.subject.id} c3 from dual
+		</foreach>
+	</insert>
+	
+	<update id="updateOptionBySid" parameterType="map">
+		update votelOption set name=#{name} where subjectId=#{sid} and optionOrder=#{order}
+	</update>
+	
+	<insert id="addOption" parameterType="Option">
+		insert into votelOption values(seq_votelOption_id.NEXTVAL,#{name},#{optionOrder},#{subject.id})
+	</insert>
+	
+	<select id="getOptionNum" parameterType="int" resultType="int">
+		select count(1) from votelOption where subjectId=#{id}
+	</select>
+</mapper>

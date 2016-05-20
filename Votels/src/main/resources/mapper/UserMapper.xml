@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:采用接口方式间接操作时，命名空间值：与映射接口的全限定名一致 -->
+<mapper namespace="com.yc.votelmybatis.mapper.UserMapper">
+	<select id="userLogin" parameterType="User" resultType="User">
+		select * from votelUsers where userId=#{userId} and password=#{password}
+	</select>
+	
+	<insert id="addUser" parameterType="User">
+		insert into votelUsers values(#{userId},#{userName},#{password},#{version},#{status})
+	</insert>
+</mapper>

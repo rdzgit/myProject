@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.cloud.mapper.TagMapper">
+	<!-- 获取所有的标签 -->
+	<select id="getAllTag" resultType="Tag">
+		select * from cloudTag
+	</select>
+	
+	<!-- 根据名字获取的标签 -->
+	<select id="findTagByTname" parameterType="String" resultType="Tag">
+		select * from cloudTag where tname = #{tname}
+	</select>
+	
+	<!-- 添加标签 -->
+	<insert id="addTag" parameterType="Tag">
+		insert into cloudTag values(cloudTag_tid.nextval,#{tname},#{tcount})
+	</insert>
+</mapper>

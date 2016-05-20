@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:采用接口方式间接操作时，命名空间值：与映射接口的全限定名一致 -->
+<mapper namespace="com.yc.votelmybatis.mapper.SubjectMapper">
+	<resultMap type="SubjectBean" id="SubjectMap">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="type" property="type" />
+		<result column="version" property="version" />
+		<collection property="options" column="id" ofType="Option"
+			select="findSubjectOptions">
+			<id column="id" property="id" />
+		</collection>
+		<collection property="users" column="id" ofType="User"
+			select="findSubjectUsers">
+			<id column="userId" property="userId" />
+		</collection>
+	</resultMap>
+
+	<select id="findSubjectOptions" parameterType="int" resultMap="OptionMap">
+		select * from votelOption where subjectId=#{id}
+	</select>
+
+	<select id="findSubjectUsers" parameterType="int" resultType="User">
+		select vu.* from item i,votelUsers vu where subjectId=#{id} and vu.userid=i.userid
+	</select>
+
+	<resultMap type="Option" id="OptionMap">
+		<id column="id" property="id" />
+		<association property="subject" column="subjectId" select="findSubject">
+			<id column="id" property="id" />
+		</association>
+	</resultMap>
+
+	<select id="findSubject" parameterType="int" resultType="Subject">
+		select * from subject where id=#{id}
+	</select>
+	
+	<select id="getOptionUserNum" parameterType="int" resultType="int">
+		select count(*) from item where optionId=#{id}
+	</select>
+	
+
+	<select id="findAllSubject" resultMap="SubjectMap">
+		select * from subject
+	</select>
+
+	<select id="findSubjectById" parameterType="int" resultMap="SubjectMap">
+		select * from subject where id=#{id}
+	</select>
+
+	<insert id="addSubject" parameterType="SubjectBean">
+		insert into subject values(seq_subject_id.nextval,#{title},#{type},1)
+		<selectKey keyProperty="id" keyColumn="currid" order="AFTER"
+			resultType="int">
+			select max(id) currid from subject
+		</selectKey>
+	</insert>
+	
+	<update id="updateSubject" parameterType="SubjectBean">
+		update subject set title=#{title},type=#{type} where id=#{id}
+	</update>
+	
+	<select id="fingSubjectLike" parameterType="string" resultMap="SubjectMap">
+		select * from subject where title like concat(concat('%',#{title}),'%')
+	</select>
+</mapper>
